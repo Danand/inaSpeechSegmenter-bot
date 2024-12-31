@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  bot:
+    container_name: ina-speech-segmenter-bot
+    image: ina-speech-segmenter-bot:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    networks:
+      - ina_speech_segmenter
+    depends_on:
+      - api
+    env_file:
+      - .env
+    environment:
+      - INA_SPEECH_SEGMENTER_API_URL=http://api:8888
+      - INA_SPEECH_SEGMENTER_BOT_LOG_LEVEL=DEBUG
+
+  api:
+    container_name: ina-speech-segmenter-api
+    image: ghcr.io/danand/inaspeechsegmenter-api:0.1.3
+    ports:
+      - "8888:8888"
+    networks:
+      - ina_speech_segmenter
+    environment:
+      - INA_SPEECH_SEGMENTER_API_LOG_LEVEL=DEBUG
+
+networks:
+  ina_speech_segmenter:
+    driver: bridge
