@@ -15,3 +15,6 @@ jobs:
           ssh-private-key: '${{ secrets.SSH_PRIVATE_KEY }}'
           ssh-host: '${{ secrets.SSH_HOST }}'
           ssh-user: 'root'
+          docker-compose-env-file-path: '.env'
+          docker-compose-env-file-content: |
+            INA_SPEECH_SEGMENTER_BOT_TOKEN="${{ secrets.INA_SPEECH_SEGMENTER_BOT_TOKEN }}"
