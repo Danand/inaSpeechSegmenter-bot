@@ -10,7 +10,7 @@ jobs:
 
     steps:
       - name: Deploy Docker Compose configuration step
-        uses: Danand/deploy-docker-compose@main
+        uses: Danand/deploy-docker-compose@v0.1.0
         with:
           ssh-private-key: '${{ secrets.SSH_PRIVATE_KEY }}'
           ssh-host: '${{ secrets.SSH_HOST }}'
