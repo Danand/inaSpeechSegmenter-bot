@@ -1,0 +1,17 @@
+name: Deploy Docker Compose configuration workflow
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy Docker Compose configuration job
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Deploy Docker Compose configuration step
+        uses: Danand/deploy-docker-compose@main
+        with:
+          ssh-private-key: '${{ secrets.SSH_PRIVATE_KEY }}'
+          ssh-host: '${{ secrets.SSH_HOST }}'
+          ssh-user: 'root'
