@@ -7,6 +7,7 @@ from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from aiogram.types import Message, User
+from aiogram.enums.chat_action import ChatAction
 
 import logging
 import sys
@@ -58,9 +59,15 @@ def format_user_info(user: User | None) -> str:
 
 async def get_analysis_report(
     bot: Bot,
+    chat_id: int,
     file_id: str,
     user_info: str,
 ) -> str:
+    await bot.send_chat_action(
+        chat_id=chat_id,
+        action=ChatAction.TYPING,
+    )
+
     file = await bot.get_file(file_id)
 
     file_path = file.file_path
@@ -76,6 +83,11 @@ async def get_analysis_report(
     if binary_io is None:
         logger.debug(f"Received message from user {user_info} has no readable data!")
         return "Cannot analyze audio: file not found."
+
+    await bot.send_chat_action(
+        chat_id=chat_id,
+        action=ChatAction.TYPING,
+    )
 
     file_bytes = binary_io.read()
 
@@ -121,6 +133,7 @@ async def handle_voice_message(message: Message) -> None:
     else:
         analysis_report = await get_analysis_report(
             bot=bot,
+            chat_id=message.chat.id,
             file_id=voice_file_id,
             user_info=user_info,
         )
